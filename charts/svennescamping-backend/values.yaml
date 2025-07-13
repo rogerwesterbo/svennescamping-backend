@@ -44,7 +44,7 @@ podSecurityContext:
 securityContext:
   capabilities:
     drop:
-    - ALL
+      - ALL
   readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 1000
@@ -61,23 +61,22 @@ ingress:
   enabled: true
   className: "nginx"
   annotations:
-    annotations:
     {
-      acme.cert-manager.io/http01-edit-in-place: 'true',
-      nginx.ingress.kubernetes.io/ssl-redirect: 'false',
-      cert-manager.io/cluster-issuer: 'letsencrypt-prod',
-      kubernetes.io/tls-acme: 'true',
-      cert-manager.io/issue-temporary-certificate: 'true',
+      acme.cert-manager.io/http01-edit-in-place: "true",
+      nginx.ingress.kubernetes.io/ssl-redirect: "false",
+      cert-manager.io/cluster-issuer: "letsencrypt-prod",
+      kubernetes.io/tls-acme: "true",
+      cert-manager.io/issue-temporary-certificate: "true",
     }
   hosts:
     - host: api.oversikt.svennescamping.no
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls: 
-   - secretName: api.oversikt.svennescamping.no-tls
-     hosts:
-       - api.oversikt.svennescamping.no
+  tls:
+    - secretName: api.oversikt.svennescamping.no-tls
+      hosts:
+        - api.oversikt.svennescamping.no
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -112,15 +111,15 @@ autoscaling:
 # Additional volumes on the output Deployment definition.
 
 # Additional volumeMounts on the output Deployment definition.
-volumeMounts: 
-- name: configvolume
-  mountPath: "/configs"
-  subPath: ".env"
-- name: datavolume
-  mountPath: "/data"
-  subPath: "prices.csv"
+volumeMounts:
+  - name: configvolume
+    mountPath: "/configs"
+    subPath: ".env"
+  - name: datavolume
+    mountPath: "/data"
+    subPath: "prices.csv"
 
-volumes: 
+volumes:
   - name: configvolume
     configMap:
       name: svennescamping-backend-config
