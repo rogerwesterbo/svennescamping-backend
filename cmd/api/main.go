@@ -48,7 +48,7 @@ func main() {
 
 	services.InitializeServices()
 
-	logger.Info("Starting Lumi 2025 Backend API")
+	logger.Info("Starting Svennes Camping Backend API")
 
 	// Create context for background operations
 	ctx, cancel := context.WithCancel(context.Background())
