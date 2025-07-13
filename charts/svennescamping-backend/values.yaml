@@ -113,7 +113,7 @@ autoscaling:
 # Additional volumeMounts on the output Deployment definition.
 volumeMounts:
   - name: configvolume
-    mountPath: "/configs"
+    mountPath: "/app"
     subPath: ".env"
   - name: datavolume
     mountPath: "/data"
