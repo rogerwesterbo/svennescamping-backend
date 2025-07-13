@@ -107,23 +107,16 @@ jobs:
           VERSION="${{ github.ref_name }}"
           VERSION="${VERSION#v*}"
 
-          cat << EOF > .github/yq-script.yaml
-          - command: update
-            path: version
-            value: "${VERSION}"
-          - command: update
-            path: appVersion
-            value: "${VERSION}"
-          EOF
+          # Install yq
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
 
-          cat << EOF > .github/yq-values-script.yaml
-          - command: update
-            path: image.tag
-            value: "${VERSION}"
-          EOF
+          # Update Chart.yaml
+          yq eval ".version = \"${VERSION}\"" -i charts/svennescamping-backend/Chart.yaml
+          yq eval ".appVersion = \"${VERSION}\"" -i charts/svennescamping-backend/Chart.yaml
 
-          npx -y yq-cli write --file=.github/yq-script.yaml charts/svennescamping-backend/Chart.yaml
-          npx -y yq-cli write --file=.github/yq-values-script.yaml charts/svennescamping-backend/values.yaml
+          # Update values.yaml
+          yq eval ".image.tag = \"${VERSION}\"" -i charts/svennescamping-backend/values.yaml
 
       - name: Package Helm chart
         run: |
