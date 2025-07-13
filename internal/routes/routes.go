@@ -2,6 +2,7 @@ package routes
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/gorilla/mux"
 	"github.com/rogerwesterbo/svennescamping-backend/internal/handlers/adminhandler"
@@ -36,6 +37,32 @@ func SetupRoutes(router *mux.Router, logger *zap.Logger) {
 	// Handle OPTIONS requests globally for CORS preflight
 	addCORSPreflightHandlers(router)
 
+	// Root endpoint - simple response for basic connectivity check
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/" {
+			http.NotFound(w, r)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"status":"ok","service":"svennescamping-backend"}`))
+	}).Methods("GET")
+
+	// ACME challenge endpoint for Let's Encrypt cert-manager
+	// This allows cert-manager to place challenge files that can be served
+	router.PathPrefix("/.well-known/acme-challenge/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Extract the token from the URL path
+		token := r.URL.Path[len("/.well-known/acme-challenge/"):]
+		if token == "" {
+			http.NotFound(w, r)
+			return
+		}
+
+		// For now, return 404 - cert-manager should handle this via ingress
+		// But having this handler prevents 405 Method Not Allowed errors
+		http.NotFound(w, r)
+	}).Methods("GET")
+
 	// Health check endpoint (unprotected)
 	router.HandleFunc("/health", healthhandler.HealthHandler(logger)).Methods("GET")
 
@@ -66,4 +93,15 @@ func SetupRoutes(router *mux.Router, logger *zap.Logger) {
 	adminRouter.HandleFunc("/users", adminhandler.ListUsersHandler(logger)).Methods("GET")
 	adminRouter.HandleFunc("/assign-role", adminhandler.AssignRoleHandler(logger)).Methods("POST")
 	adminRouter.HandleFunc("/background-fetcher-status", adminhandler.BackgroundFetcherStatusHandler(logger)).Methods("GET")
+
+	// Catch-all handler for unmatched routes - must be last
+	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// If it's an ACME challenge path, return 404 (cert-manager should handle via ingress)
+		if strings.HasPrefix(r.URL.Path, "/.well-known/acme-challenge/") {
+			http.NotFound(w, r)
+			return
+		}
+		// For other unmatched paths, return 404
+		http.NotFound(w, r)
+	})
 }
