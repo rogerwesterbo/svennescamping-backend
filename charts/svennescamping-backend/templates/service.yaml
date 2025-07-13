@@ -1,14 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: { { include "svennescamping-backend.fullname" . } }
-  labels: { { - include "svennescamping-backend.labels" . | nindent 4 } }
+  name: {{ include "svennescamping-backend.fullname" . }}
+  labels:
+    {{- include "svennescamping-backend.labels" . | nindent 4 }}
 spec:
-  type: { { .Values.service.type } }
+  type: {{ .Values.service.type }}
   ports:
-    - port: { { .Values.service.port } }
-      targetPort: { { .Values.containerport } }
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.containerport }}
       protocol: TCP
       name: http
   selector:
-    { { - include "svennescamping-backend.selectorLabels" . | nindent 4 } }
+    {{- include "svennescamping-backend.selectorLabels" . | nindent 4 }}
