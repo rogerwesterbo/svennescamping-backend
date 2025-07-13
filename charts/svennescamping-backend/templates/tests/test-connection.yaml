@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "svennescamping-backend.fullname" . }}-test-connection"
+  labels:
+    {{- include "svennescamping-backend.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "svennescamping-backend.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never

@@ -1,0 +1,56 @@
+# Git files
+.git
+.gitignore
+.github/
+
+# Documentation
+*.md
+docs/
+ENVIRONMENT.md
+LICENSE
+
+# Development files
+.env
+.env.*
+.vscode/
+*.log
+
+# Build artifacts
+dist/
+build/
+bin/
+
+# Go specific
+vendor/
+
+# Kubernetes/Helm
+charts/
+
+# Testing
+coverage.out
+*.test
+
+# Temporary files
+tmp/
+temp/
+
+# IDE files
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker files (to avoid recursive copying)
+Dockerfile*
+docker-compose*
+
+# Scripts that aren't needed in container
+hack/
+Makefile
+
+# Dependencies cache (we download fresh in container)
+go.sum.backup
