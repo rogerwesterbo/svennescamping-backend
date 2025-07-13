@@ -22,12 +22,12 @@ func Init() {
 
 	// Set default values
 	viper.SetDefault(consts.DEVELOPMENT, false)
-	viper.SetDefault(consts.STRIPE_APIKEY, "sk_test_4eC39HqLyjWDarjtT1zdp7dc")
-	viper.SetDefault(consts.STRIPE_WEBHOOKKEY, "whsec_test_webhook_key")
+	viper.SetDefault(consts.STRIPE_APIKEY, "")
+	viper.SetDefault(consts.STRIPE_WEBHOOKKEY, "")
 	viper.SetDefault(consts.STRIPE_WEBHOOKURL, "https://example.com/webhook")
 	viper.SetDefault(consts.STRIPE_APIURL, "https://api.stripe.com")
 	viper.SetDefault(consts.STRIPE_APIVERSION, "2020-08-27")
-	viper.SetDefault(consts.CORS_ORIGINS, "http://localhost:5173;http://localhost:3000;https://yourdomain.com")
+	viper.SetDefault(consts.CORS_ORIGINS, "http://localhost:5173")
 
 	// Load environment variables from the process (highest priority)
 	viper.AutomaticEnv()
