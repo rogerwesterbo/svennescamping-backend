@@ -76,7 +76,7 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls:
-    - secretName: api.oversikt.svennescamping.no-tls
+    - secretName: apioversiktsvennescampingno-tls
       hosts:
         - api.oversikt.svennescamping.no
 
