@@ -20,6 +20,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 containerport: 8888
+revisionHistoryLimit: 10
 
 # This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:
@@ -65,6 +66,7 @@ ingress:
   annotations:
     cert-manager.io/cluster-issuer: 'letsencrypt-prod'
     nginx.ingress.kubernetes.io/ssl-redirect: 'false'
+    acme.cert-manager.io/http01-edit-in-place: 'true'
   hosts:
     - host: api.oversikt.svennescamping.no
       paths:
