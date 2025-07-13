@@ -63,9 +63,13 @@ ingress:
   enabled: true
   className: "nginx"
   annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    {
+      acme.cert-manager.io/http01-edit-in-place: 'true',
+      nginx.ingress.kubernetes.io/ssl-redirect: 'false',
+      cert-manager.io/cluster-issuer: 'letsencrypt-prod',
+      kubernetes.io/tls-acme: 'true',
+      cert-manager.io/issue-temporary-certificate: 'true'
+    }
   hosts:
     - host: api.oversikt.svennescamping.no
       paths:
