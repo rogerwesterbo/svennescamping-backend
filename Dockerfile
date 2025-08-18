@@ -1,5 +1,5 @@
 # Build the application binary
-FROM --platform=$BUILDPLATFORM docker.io/golang:1.24.5-alpine AS builder
+FROM --platform=$BUILDPLATFORM docker.io/golang:1.25.0-alpine AS builder
 
 # Install ca-certificates and git for secure HTTPS and module downloads
 RUN apk add --no-cache ca-certificates git
